@@ -29,6 +29,13 @@ object T {
         "toCollect" to ("ఇంకా రావాలి" to "Still to collect"),
         "expected" to ("ఈ నెల రావాల్సింది" to "Due this month"),
         "totalPending" to ("మొత్తం బాకీ" to "Total pending"),
+        "moneyTitle" to ("ఈ నెల డబ్బు" to "This month's money"),
+        "received" to ("ఈ నెల వచ్చింది" to "Received this month"),
+        "stillOwed" to ("ఇంకా రావాలి" to "Still to come"),
+        "people" to ("మంది" to "people"),
+        "of" to ("మొత్తం" to "of"),
+        "moneyHelp" to ("ఆకుపచ్చ = ఈ నెల వచ్చిన డబ్బు. ఆరెంజ్ = ఇంకా రావాల్సిన డబ్బు (ఈ నెల + పాత బాకీ). నొక్కితే ఎవరో చూపిస్తుంది."
+            to "Green = money received this month. Orange = money people still owe (this month + old dues). Tap a line to see who."),
         "maturing" to ("గడువు దగ్గరలో" to "Nearing maturity"),
         "matured" to ("గడువు ముగిసింది" to "Matured"),
         "todayCollection" to ("ఈరోజు వసూలు" to "Today's collection"),

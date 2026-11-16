@@ -204,21 +204,23 @@ fun HomeScreen(s: AppState) {
                     }
                 }
                 item {
-                    val left = (sm.expected - sm.collected).coerceAtLeast(0.0)
-                    Card(title = "${T["thisMonth"]} — ${T["byAmount"]}") {
+                    // Simple money picture: what came in this month vs what people still owe (this month + old dues)
+                    val got = sm.collected
+                    val owed = sm.pendingTotal
+                    val payers = sts.count { it.paidThisMonth > 0 }
+                    Card(title = T["moneyTitle"]) {
                         Donut(
-                            listOf(sm.collected to CUpToDate, left to CPending),
+                            listOf(got to CUpToDate, owed to CPending),
                             middle = {
-                                Text(if (sm.expected > 0) "${Math.round(sm.collected / sm.expected * 100).coerceAtMost(999)}%" else "—", style = MaterialTheme.typography.headlineMedium)
-                                Text(T["collected"], style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(inr(got), style = MaterialTheme.typography.titleLarge, color = CUpToDate)
+                                Text("${T["of"]} ${inr(got + owed)}", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             },
-                            modifier = Modifier.size(180.dp).align(Alignment.CenterHorizontally),
+                            modifier = Modifier.size(190.dp).align(Alignment.CenterHorizontally),
                         )
                         Spacer(Modifier.height(10.dp))
-                        LegendRow(CUpToDate, T["collected"], inr(sm.collected)) { s.push(Route.Filtered(Filter.PAID_THIS_MONTH)) }
-                        LegendRow(CPending, T["toCollect"], inr(left)) { s.push(Route.Filtered(Filter.NOT_PAID_THIS_MONTH)) }
-                        Kv(T["expected"], inr(sm.expected))
-                        Kv(T["totalPending"], inr(sm.pendingTotal), color = CPending) { s.push(Route.Filtered(Filter.PENDING)) }
+                        LegendRow(CUpToDate, "${T["received"]} · $payers ${T["people"]}", inr(got)) { s.push(Route.Filtered(Filter.PAID_THIS_MONTH)) }
+                        LegendRow(CPending, "${T["stillOwed"]} · ${sm.pending} ${T["people"]}", inr(owed)) { s.push(Route.Filtered(Filter.PENDING)) }
+                        Muted(T["moneyHelp"], Modifier.padding(top = 6.dp))
                     }
                 }
                 item {
