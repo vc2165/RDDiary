@@ -95,7 +95,7 @@ object T {
         "bigText" to ("పెద్ద అక్షరాలు" to "Large text"),
         "noAccounts" to ("ఇంకా ఖాతాలు లేవు. సెట్టింగ్స్ లో దిగుమతి చేయండి లేదా కొత్త ఖాతా జోడించండి." to "No accounts yet. Import them in Settings or add a new account."),
         "noResults" to ("ఏమీ దొరకలేదు" to "Nothing found"),
-        "nobodyToday" to ("ఈరోజు ఇంకా ఎవరూ కట్టలేదు" to "No collections yet on this day"),
+        "nobodyToday" to ("ఈ నెల ఇంకా వసూళ్లు లేవు" to "No collections yet this month"),
         "afterThis" to ("ఇది కట్టిన తర్వాత" to "After this payment"),
         "fullyPaid" to ("పూర్తిగా కట్టారు" to "Fully paid"),
         "monthsAhead" to ("నెలలు ముందుగా" to "months ahead"),

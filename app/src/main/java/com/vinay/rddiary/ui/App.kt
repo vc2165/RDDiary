@@ -36,7 +36,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.People
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Today
+import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -123,7 +123,7 @@ private fun Tabs(s: AppState) {
             NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest) {
                 listOf(
                     Triple(Tab.HOME, T["home"], Icons.Outlined.Home), Triple(Tab.ACCOUNTS, T["accounts"], Icons.Outlined.People),
-                    Triple(Tab.TODAY, T["today"], Icons.Outlined.Today), Triple(Tab.SETTINGS, T["more"], Icons.Outlined.Settings),
+                    Triple(Tab.TODAY, T["thisMonth"], Icons.Outlined.CalendarMonth), Triple(Tab.SETTINGS, T["more"], Icons.Outlined.Settings),
                 ).forEach { (t, l, ic) ->
                     NavigationBarItem(selected = s.tab == t, onClick = { s.tab = t }, icon = { Icon(ic, null) }, label = { Text(l) })
                 }
@@ -141,7 +141,7 @@ private fun Tabs(s: AppState) {
                 when (t) {
                     Tab.HOME -> HomeScreen(s)
                     Tab.ACCOUNTS -> AccountsScreen(s)
-                    Tab.TODAY -> TodayScreen(s)
+                    Tab.TODAY -> MonthScreen(s)
                     Tab.SETTINGS -> SettingsScreen(s)
                 }
             }

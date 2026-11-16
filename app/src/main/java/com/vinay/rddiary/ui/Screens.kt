@@ -434,58 +434,56 @@ fun EditAccountScreen(s: AppState, id: String?) {
     }
 }
 
-/* ---------------- Today's collection ---------------- */
+/* ---------------- This month's collection ---------------- */
 
 @Composable
-fun TodayScreen(s: AppState) {
-    var day by remember { mutableStateOf(today()) }
-    var picking by remember { mutableStateOf(false) }
+fun MonthScreen(s: AppState) {
+    var month by remember { mutableStateOf(thisMonth()) }
     val b = s.book
     val names = remember(b) { b.accounts.associate { it.id to it.name } }
-    val list = remember(b, day) { b.payments.filter { it.date == day }.sortedByDescending { it.created } }
-    val monthTotal = remember(b, day) { b.payments.filter { it.date.startsWith(day.take(7)) }.sumOf { it.amount } }
-    Scaffold(topBar = { Bar(T["todayCollection"], null) }) { pad ->
+    val list = remember(b, month) { b.payments.filter { it.date.startsWith(month.toString()) }.sortedWith(compareByDescending<Payment> { it.date }.thenByDescending { it.created }) }
+    val days = remember(list) { list.groupBy { it.date } }
+    val people = remember(list) { list.map { it.accountId }.distinct().size }
+    Scaffold(topBar = {
+        Bar(monthLabel(month), null) {
+            IconButton(onClick = { month = month.minusMonths(1) }) { Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.KeyboardArrowLeft, null) }
+            IconButton(onClick = { month = month.plusMonths(1) }, enabled = month < thisMonth()) { Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.KeyboardArrowRight, null) }
+        }
+    }) { pad ->
         LazyColumn(flingBehavior = rememberCalmFling(), modifier = Modifier.padding(pad), contentPadding = PaddingValues(bottom = 24.dp)) {
             item {
-                Row(Modifier.horizontalScroll(rememberScrollState()).padding(horizontal = 14.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    val t = today()
-                    val y = LocalDate.now().minusDays(1).toString()
-                    FilterChip(day == t, { day = t }, { Text(T["today"], style = MaterialTheme.typography.labelLarge) })
-                    FilterChip(day == y, { day = y }, { Text(if (T.te) "నిన్న" else "Yesterday", style = MaterialTheme.typography.labelLarge) })
-                    FilterChip(day != t && day != y, { picking = true }, { Text(if (day != t && day != y) dayLabel(day) else T["pickDay"], style = MaterialTheme.typography.labelLarge) },
-                        leadingIcon = { Icon(Icons.Outlined.CalendarMonth, null) })
-                }
-            }
-            item {
                 Card {
-                    Text(dayLabel(day), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(T["received"], style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                     Text(inr(list.sumOf { it.amount }), style = MaterialTheme.typography.displaySmall, color = Brand)
-                    Muted("${list.size} ${T["entries"]}")
-                    HorizontalDivider(Modifier.padding(vertical = 10.dp), color = MaterialTheme.colorScheme.outlineVariant)
-                    Kv(T["thisMonth"] + " · " + monthLabel(ym(day.take(7))), inr(monthTotal))
+                    Muted("${list.size} ${T["entries"]} · $people ${T["people"]}")
+                    if (month == thisMonth()) {
+                        val todays = list.filter { it.date == today() }
+                        HorizontalDivider(Modifier.padding(vertical = 10.dp), color = MaterialTheme.colorScheme.outlineVariant)
+                        Kv(T["todayCollection"], "${inr(todays.sumOf { it.amount })} · ${todays.size}")
+                    }
                 }
             }
             if (list.isEmpty()) item { Muted(T["nobodyToday"], Modifier.padding(24.dp)) }
-            items(list, key = { it.id }) { p ->
-                Card(onClick = { s.push(Route.Pay(p.accountId, p.id)) }) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            Text(names[p.accountId] ?: "?", style = MaterialTheme.typography.titleMedium)
-                            if (p.note.isNotBlank()) Muted(p.note)
+            days.forEach { (d, ps) ->
+                item(key = "h$d") {
+                    Row(Modifier.fillMaxWidth().padding(start = 22.dp, end = 22.dp, top = 14.dp, bottom = 2.dp)) {
+                        Text(if (d == today()) T["today"] + " · " + dayLabel(d) else dayLabel(d), Modifier.weight(1f), style = MaterialTheme.typography.titleSmall)
+                        Text(inr(ps.sumOf { it.amount }), style = MaterialTheme.typography.titleSmall, color = Brand)
+                    }
+                }
+                items(ps, key = { it.id }) { p ->
+                    Card(onClick = { s.push(Route.Pay(p.accountId, p.id)) }) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Column(Modifier.weight(1f)) {
+                                Text(names[p.accountId] ?: "?", style = MaterialTheme.typography.titleMedium)
+                                if (p.note.isNotBlank()) Muted(p.note)
+                            }
+                            Text(inr(p.amount), style = MaterialTheme.typography.titleMedium, color = CUpToDate)
                         }
-                        Text(inr(p.amount), style = MaterialTheme.typography.titleMedium, color = CUpToDate)
                     }
                 }
             }
         }
-    }
-    if (picking) {
-        val ps = rememberDatePickerState(LocalDate.parse(day).atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli())
-        DatePickerDialog(
-            onDismissRequest = { picking = false },
-            confirmButton = { TextButton(onClick = { ps.selectedDateMillis?.let { day = Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate().toString() }; picking = false }) { Text("OK") } },
-            dismissButton = { TextButton(onClick = { picking = false }) { Text(T["cancel"]) } },
-        ) { DatePicker(ps) }
     }
 }
 
