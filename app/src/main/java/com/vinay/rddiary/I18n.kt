@@ -72,8 +72,8 @@ object T {
         "closeAccount" to ("ఖాతా మూసివేయండి" to "Close account"),
         "reopenAccount" to ("ఖాతా మళ్ళీ తెరవండి" to "Reopen account"),
         "import" to ("ఖాతాలు దిగుమతి (Excel నుండి)" to "Import accounts (from Excel)"),
-        "importHelp" to ("Excel లో ఈ వరుసలు కాపీ చేసి ఇక్కడ పేస్ట్ చేయండి:\nపేరు | ఖాతా నంబర్ | నెలసరి | ప్రారంభ నెల | కాలపరిమితి | ఇప్పటివరకు కట్టింది"
-            to "Copy these columns from Excel and paste them here:\nName | Account no | Monthly | Opening month | Tenure | Paid so far"),
+        "importHelp" to ("పోస్టాఫీస్ ఏజెంట్ పోర్టల్‌లో 'Deposit Accounts List' పేజీని మొత్తం కాపీ చేసి ఇక్కడ పేస్ట్ చేయండి. ప్రతి పేజీకి ఇలాగే చేయండి — ఇప్పటికే ఉన్న ఖాతాలు మళ్ళీ రావు.\n\nలేదా Excel నుండి: పేరు | ఖాతా నంబర్ | నెలసరి | ప్రారంభ నెల | కాలపరిమితి | ఇప్పటివరకు కట్టింది"
+            to "Copy a whole 'Deposit Accounts List' page from the India Post agent portal and paste it here. Repeat for each page — accounts already added are skipped.\n\nOr from Excel: Name | Account no | Monthly | Opening month | Tenure | Paid so far"),
         "check" to ("చూడండి" to "Check"),
         "importN" to ("దిగుమతి చేయండి" to "Import"),
         "found" to ("ఖాతాలు దొరికాయి" to "accounts found"),

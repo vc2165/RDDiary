@@ -154,11 +154,30 @@ fun parseMonth(sIn: String): String? {
 
 fun num(s: String): Double? = s.replace(Regex("[₹,\\s]|rs\\.?", RegexOption.IGNORE_CASE), "").toDoubleOrNull()
 
+// India Post agent portal "Deposit Accounts List" row:
+// 020047761649  M JAYALAKSHMI  3,000.00 Cr.  52  26-Dec-2026
+private val PORTAL = Regex("""^\s*(\d{9,16})\s+(.+?)\s+([\d,]+(?:\.\d+)?)\s*(?:Cr\.?|Dr\.?)?\s+(\d{1,3})\s+(\d{1,2})-([A-Za-z]{3})-(\d{4})\s*$""")
+// Header / footer lines copied along with a portal page
+private val PORTAL_NOISE = Regex("(?i)deposit accounts list|displaying \\d|account no\\s+account name|^\\s*page \\d+ of \\d+|^\\s*select\\b")
+
+/** Reads one portal row. Opening month = next due month − months paid; paid so far = denomination × months paid. */
+fun parsePortalRow(line: String): Account? {
+    val m = PORTAL.find(line) ?: return null
+    val (acc, name, den, paid, _, mon, year) = m.destructured
+    val mi = MONTHS.indexOf(mon.lowercase())
+    if (mi < 0) return null
+    val monthly = den.replace(",", "").toDoubleOrNull() ?: return null
+    val months = paid.toInt()
+    val start = YearMonth.of(year.toInt(), mi + 1).minusMonths(months.toLong())
+    return Account(uid(), name.trim().replace(Regex("\\s+"), " "), acc, "", monthly, start.toString(), if (months >= 60) 120 else 60, monthly * months)
+}
+
 fun parseAccounts(text: String): ImportResult {
     val out = ArrayList<Account>()
     val skipped = ArrayList<String>()
     for (raw in text.split(Regex("\\r?\\n"))) {
-        if (raw.isBlank()) continue
+        if (raw.isBlank() || PORTAL_NOISE.containsMatchIn(raw)) continue
+        parsePortalRow(raw)?.let { out += it.copy(id = uid() + out.size); continue }
         var cols = raw.split('\t')
         if (cols.size < 3) cols = raw.split(Regex(""",(?=(?:[^"]*"[^"]*")*[^"]*$)"""))
         val c = cols.map { it.trim().removeSurrounding("\"") }
