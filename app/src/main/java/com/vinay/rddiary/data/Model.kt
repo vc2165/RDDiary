@@ -177,7 +177,8 @@ fun parseAccounts(text: String): ImportResult {
     val skipped = ArrayList<String>()
     for (raw in text.split(Regex("\\r?\\n"))) {
         if (raw.isBlank() || PORTAL_NOISE.containsMatchIn(raw)) continue
-        parsePortalRow(raw)?.let { out += it.copy(id = uid() + out.size); continue }
+        val portal = parsePortalRow(raw)
+        if (portal != null) { out += portal.copy(id = uid() + out.size); continue }
         var cols = raw.split('\t')
         if (cols.size < 3) cols = raw.split(Regex(""",(?=(?:[^"]*"[^"]*")*[^"]*$)"""))
         val c = cols.map { it.trim().removeSurrounding("\"") }
