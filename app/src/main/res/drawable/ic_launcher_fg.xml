@@ -1,0 +1,15 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp" android:viewportWidth="108" android:viewportHeight="108">
+    <group android:pivotX="54" android:pivotY="54" android:scaleX="0.74" android:scaleY="0.74">
+        <!-- passbook -->
+        <path android:fillColor="#FFFFFFFF"
+            android:pathData="M37,26h34a7,7 0,0 1,7 7v42a7,7 0,0 1,-7 7h-34a7,7 0,0 1,-7 -7v-42a7,7 0,0 1,7 -7z" />
+        <path android:fillColor="#FFD7EFEA" android:pathData="M30,33a7,7 0,0 1,7 -7h4v56h-4a7,7 0,0 1,-7 -7z" />
+        <group android:translateX="19" android:translateY="10" android:scaleX="0.62" android:scaleY="0.62">
+            <path android:strokeColor="#FF0B6E5F" android:strokeWidth="6"
+                android:strokeLineCap="round" android:strokeLineJoin="round"
+                android:pathData="M42,36H66M42,45H66M42,36H50A9.5,9.5 0,0 1,50 55H44L63,75" />
+        </group>
+        <path android:strokeColor="#FFD7EFEA" android:strokeWidth="3.5" android:strokeLineCap="round" android:pathData="M48,72h20" />
+    </group>
+</vector>
