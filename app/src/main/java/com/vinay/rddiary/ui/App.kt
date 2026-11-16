@@ -191,7 +191,7 @@ fun HomeScreen(s: AppState) {
                     Card(title = "${T["thisMonth"]} · ${now.month.getDisplayName(TextStyle.FULL, if (T.te) Locale("te") else Locale.ENGLISH)} — ${T["byAccounts"]}") {
                         Donut(
                             listOf(sm.upToDate.toDouble() to CUpToDate, sm.pending.toDouble() to CPending, sm.advance.toDouble() to CAdvance),
-                            center = {
+                            middle = {
                                 Text("${sm.active}", style = MaterialTheme.typography.headlineMedium)
                                 Text(T["accountsWord"], style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             },
@@ -208,7 +208,7 @@ fun HomeScreen(s: AppState) {
                     Card(title = "${T["thisMonth"]} — ${T["byAmount"]}") {
                         Donut(
                             listOf(sm.collected to CUpToDate, left to CPending),
-                            center = {
+                            middle = {
                                 Text(if (sm.expected > 0) "${Math.round(sm.collected / sm.expected * 100).coerceAtMost(999)}%" else "—", style = MaterialTheme.typography.headlineMedium)
                                 Text(T["collected"], style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             },

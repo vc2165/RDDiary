@@ -162,7 +162,7 @@ fun AccountRow(s: AppState, st: AccState) {
 
 /** Donut chart that draws itself in, gently. */
 @Composable
-fun Donut(parts: List<Pair<Double, Color>>, center: @Composable () -> Unit, modifier: Modifier) {
+fun Donut(parts: List<Pair<Double, Color>>, middle: @Composable () -> Unit, modifier: Modifier) {
     val p = remember { Animatable(0f) }
     LaunchedEffect(parts) { p.animateTo(1f, tween(500, easing = FastOutSlowInEasing)) }
     val total = parts.sumOf { it.first }
@@ -182,7 +182,7 @@ fun Donut(parts: List<Pair<Double, Color>>, center: @Composable () -> Unit, modi
                 }
             }
         }
-        Column(horizontalAlignment = Alignment.CenterHorizontally) { center() }
+        Column(horizontalAlignment = Alignment.CenterHorizontally) { middle() }
     }
 }
 
