@@ -32,6 +32,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Delete
@@ -446,8 +448,8 @@ fun MonthScreen(s: AppState) {
     val people = remember(list) { list.map { it.accountId }.distinct().size }
     Scaffold(topBar = {
         Bar(monthLabel(month), null) {
-            IconButton(onClick = { month = month.minusMonths(1) }) { Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.KeyboardArrowLeft, null) }
-            IconButton(onClick = { month = month.plusMonths(1) }, enabled = month < thisMonth()) { Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.KeyboardArrowRight, null) }
+            IconButton(onClick = { month = month.minusMonths(1) }) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, null) }
+            IconButton(onClick = { month = month.plusMonths(1) }, enabled = month < thisMonth()) { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, null) }
         }
     }) { pad ->
         LazyColumn(flingBehavior = rememberCalmFling(), modifier = Modifier.padding(pad), contentPadding = PaddingValues(bottom = 24.dp)) {
